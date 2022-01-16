@@ -20,6 +20,24 @@ test:
   <<: *default
   database: db/test.sqlite3
 
+# 元の記載
+# production:
+#   <<: *default
+  # database: db/production.sqlite3
+
+# 元の記載から修正部分を下記に展開
 production:
-  <<: *default
-  database: db/production.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  # For details on connection pooling, see Rails configuration guide
+  # https://railsguides.jp/configuring.html#データベース接続をプールする
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: sample_app_production
+  username: sample_app
+  password: <%= ENV['SAMPLE_APP_DATABASE_PASSWORD'] %>
+  
+  
+  
+  
+
+# --ここまでプロダクションを記載
