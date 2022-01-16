@@ -19,6 +19,6 @@ class User < ApplicationRecord
   # ハッシュのパスワードが作成できるようにする
   has_secure_password
   # パスワードのバリデーションを設定
-  validates :password, presence: true, length: { minimum:6 }
+  validates :password, presence: true, length: { minimum: 6 }
   
 end

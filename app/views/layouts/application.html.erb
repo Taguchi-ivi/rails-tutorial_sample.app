@@ -10,8 +10,16 @@
   <body>
     <%= render 'layouts/header' %>
     <div class="container">
+      <!-- flash(初回時に表示するwelcomeメッセージ)-->
+      <% flash.each do |message_type,message| %>
+        <!--<div class="alert alert-<%#= message_type %>"><%#= message %></div>-->
+        <%= content_tag(:div, message, class: "alert alert-#{message_type}" ) %>
+      <% end %>
       <%= yield %>  
       <%= render 'layouts/footer' %>
+      <!-- if Rails.evn.development? とすることで開発環境だけで表示される trueになるのは開発環境だけだから --> 
+      <!-- Rails には本番環境 テスト環境 開発環境がある -->
+      <%= debug(params) if Rails.env.development? %>
     </div>
   </body>
 </html>

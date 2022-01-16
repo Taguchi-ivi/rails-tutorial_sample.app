@@ -12,6 +12,9 @@ Rails.application.routes.draw do
   # user
   get '/signup',   to: 'users#new'
   
+  # users/1のようなURL(ルーティング)を有効にする
+  resources :users
+  
   #get 'static_pages/home'
   #get 'static_pages/help'
   #get 'static_pages/about'
