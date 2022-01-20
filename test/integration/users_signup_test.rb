@@ -41,8 +41,10 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     follow_redirect!
     # urlが遷移先になっていることを確認
     assert_template 'users/show'
-    assert_not flash.empty?   #flashの中身が空でないかテスト
-  
+    # assert_not flash.empty?   #flashの中身が空でないかテスト
+    
+    # テスト用ユーザーがログイン中か確認
+    assert is_logged_in?
   end
   
   

@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  # 自動的に追加される下記行をコメントアウト
+  # get 'sessions/new'
+  
   # get 'users/new'
   # root 'application#hello'
   root 'static_pages#home'
@@ -11,6 +14,14 @@ Rails.application.routes.draw do
   
   # user
   get '/signup',   to: 'users#new'
+  
+  # 下記消すとエラーになると描いてあったが本当？
+  # post 'signup',   to: 'users#create'
+  
+  # login
+  get     '/login',  to: 'sessions#new'
+  post    '/login',  to: 'sessions#create'
+  delete  'logout',  to: 'sessions#destroy'
   
   # users/1のようなURL(ルーティング)を有効にする
   resources :users

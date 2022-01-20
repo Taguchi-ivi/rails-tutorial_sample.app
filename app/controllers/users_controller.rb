@@ -16,6 +16,9 @@ class UsersController < ApplicationController
     if @user.save
       ## 保存の成功の際はここに
       
+      #新規登録したユーザーはログイン済みとする
+      log_in @user
+      
       # 新規ユーザーへのウィルカムメッセージ(2度目以降は表示しない),リダイレクトした直後のページに表示される
       flash[:success] = "Welcome to the Sample App!"
       
