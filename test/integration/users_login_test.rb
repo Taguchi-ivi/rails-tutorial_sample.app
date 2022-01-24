@@ -52,6 +52,8 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_not is_logged_in?
     # ルートにリダイレクト
     assert_redirected_to root_url
+    # 更新：複数タブで開いていた場合を想定して、再度ログアウト
+    delete logout_path
     # 実際にリダイレクト先に移動
     follow_redirect!
     # ログインのリンクが存在することを確認(ログアウト済みである為)
@@ -60,6 +62,26 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", logout_path,      count: 0
     # ユーザー詳細ページへのリンクが存在しないことを確認(ログアウト済みである為)
     assert_select "a[href=?]", user_path(@user), count: 0  
+  end
+  
+  
+  # ログインした際にremember_meが登録されることを確認
+  test "login with remembering" do
+    log_in_as(@user,remember_me: '1')
+    # assert_not_empty cookies[:remember_token]
+    # tokenが発行されているか確認
+    assert_equal cookies['remember_token'], assigns(:user).remember_token
+    
+  end
+  
+  # ログインした際にremember_meを登録しなかった場合に、登録されないことを確認
+  test "login without remembering" do
+    # cookieを保存してログイン
+    log_in_as(@user,remember_me: '1')
+    delete logout_path
+    # cookieを削除してログイン
+    log_in_as(@user,remember_me: '0')
+    assert_empty cookies[:remember_token]
   end
     
   # test "the truth" do
