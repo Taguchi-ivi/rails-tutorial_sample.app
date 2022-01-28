@@ -2,6 +2,7 @@
 @import "bootstrap";
 
 // $light-gray: #777;
+$gray-lighter : #777;
 $gray-medium-light: #eaeaea;
 
 @mixin box_sizing {
@@ -208,3 +209,19 @@ input{
   width: auto;
   margin-left: 0;
 }
+
+/* users index */
+
+.users {
+  line-style: none;
+  margin: 0;
+  li {
+    overflow: auto;
+    padding: 10px 0;
+    border-bottom: 1px solid $gray-lighter;
+  }
+}
+
+
+
+

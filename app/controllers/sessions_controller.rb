@@ -1,5 +1,6 @@
 class SessionsController < ApplicationController
   def new
+    # debugger
   end
   
   def create
@@ -24,7 +25,9 @@ class SessionsController < ApplicationController
       params[:session][:remember_me] == '1' ? remember(@user) :forget(@user)
       # リダイレクト先を指定（プロフィールページに遷移）
       # redirect_to user
-      redirect_to @user
+      # redirect_to @user
+      # 記憶されていたURLが存在した場合はそっちにリダイレクトさせる。なければプロフィール画面へ
+      redirect_back_or @user
       
     else
       # 認証NGの場合 --エラーメッセージを作成する

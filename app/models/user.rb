@@ -24,7 +24,9 @@ class User < ApplicationRecord
   # ハッシュのパスワードが作成できるようにする
   has_secure_password
   # パスワードのバリデーションを設定
-  validates :password, presence: true, length: { minimum: 6 }
+  # validates :password, presence: true, length: { minimum: 6 }
+  # has_secure_passwordで空欄を許容していないため、新規レコードではエラーになる。既存のレコードはpassが空欄も許容
+  validates :password,presence: true, length: { minimum: 6 }, allow_nil:true
   
   
   class << self
