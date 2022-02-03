@@ -15,11 +15,16 @@ class UsersController < ApplicationController
     # 全ユーザーが格納された変数(viewで使えるインスタンス変数)
     # @users = User.all 
     # paginateを実装 引数にページを設定
-    @users = User.paginate(page: params[:page])
+    # @users = User.paginate(page: params[:page])
+    # 有効であるユーザーが:idを指定すると各ユーザーのページが表示される
+    @users = User.where(activated: true).paginate(page: params[:page])
   end
   
   def show
     @user = User.find(params[:id])
+    # @userが有効でない場合はリダイレクトを実行しない
+    # 同じアクション内でrenderを複数呼び出すとエラーになるため、and return をつけて明示的に処理を終了させる
+    redirect_to root_url and return unless @user.activated?
     #debugger #デバッグの情報をターミナルに出力する(users/1にアクセスすると出力させる) & コンソールとしてターミナルで値を取得できたりする
   end
   
@@ -35,13 +40,19 @@ class UsersController < ApplicationController
     if @user.save
       ## 保存の成功の際はここに
       
+      # リファクタリング　コントローラからモデルに移動
+      # UserMailer.account_activation(@user).deliver_now
+      @user.send_activation_email
+      flash[:info] = "Please check your email to activate your account."
+       redirect_to root_url
       #新規登録したユーザーはログイン済みとする
-      log_in @user
+      # log_in @user
       
       # 新規ユーザーへのウィルカムメッセージ(2度目以降は表示しない),リダイレクトした直後のページに表示される
-      flash[:success] = "Welcome to the Sample App!"
+      # flash[:success] = "Welcome to the Sample App!"
       
-      redirect_to @user #redirect_to user_url(@user)と同義
+      # アカウント有効化において、ユーザーページへの遷移は意味がない
+      # redirect_to @user #redirect_to user_url(@user)と同義
     else
       render 'new'
     end

@@ -96,7 +96,7 @@ class UserTest < ActiveSupport::TestCase
   
   # 記憶ダイジェストを持たないユーザーを用意してメソッドで確認 他のブラウザで記憶ダイジェストを持たない状態となった場合の確認
   test "authenticated? should return false for a user with nil digest" do
-    assert_not @user.authenticated?('')
+    assert_not @user.authenticated?(:remember, '')
   end
   
 end

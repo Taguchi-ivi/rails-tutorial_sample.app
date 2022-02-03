@@ -26,6 +26,10 @@ Rails.application.routes.draw do
   # users/1のようなURL(ルーティング)を有効にする
   resources :users
   
+  # 名前付きルートが使えるように、またeditのみ使えるようにする
+  resources :account_activations, only: [:edit]
+
+  
   #get 'static_pages/home'
   #get 'static_pages/help'
   #get 'static_pages/about'

@@ -14,28 +14,47 @@ michael:
   email: michael@example.com
   password_digest: <%= User.digest('password') %>
   admin: true
+  activated: true
+  activated_at: <%= Time.zone.now %>
   
 # もう一人のテストユーザーを作成
 archer:
   name: Sterling Archer
   email: duchess@example.gov
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
+  
+# usersの各ページへ有効化されたアカウントのみ表示されることを確認するため、有効化されていないユーザーを作成
+red:
+  name: Red Marlboro
+  email: red@example.com
+  password_digest: <%= User.digest('password')%>
+  activated: false
+  activated_at: <%= Time.zone.now %>
+  
 
 # paginateのテストのために30名以上のテストデータを作成する
 lana:
   name: Lana Kane
   email: hands@example.gov
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated_at: <%= Time.zone.now %>
 
 malory:
   name: Malory Archer
   email: boss@example.gov
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated: <%= Time.zone.now %>
   
 <% 30.times do |n| %>
 user_<%= n %>:
   name:  <%= "User #{n}" %>
   email: <%= "user-#{n}@example.com" %>
   password_digest: <%= User.digest('password') %>
+  activated: true
+  activated: <%= Time.zone.now %>
 <% end %>
   

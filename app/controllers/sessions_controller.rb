@@ -14,20 +14,30 @@ class SessionsController < ApplicationController
     if @user&.authenticate(params[:session][:password])
       # 認証OKの場合 --ログイン後にユーザーページにリダイレクトする
       
+      if @user.activated?
+        log_in @user
+        params[:session][:remember_me] == '1' ? remember(@user) :forget(@user)
+        redirect_back_or @user
+      else
+        message = "Account not activated."
+        message += "Check your email for the activation link." 
+        flash[:warning] = message
+        redirect_to root_url
+      end
       #cookieにログイン（関数） 
       # log_in user
-      log_in @user
+      # log_in @user
       
       #永続cookieを設定
       # remember user
       # chekboxがオン(1)なら記憶ダイジェストを、オフ(0)なら記憶ダイジェストを破棄する　それを1行で指定
       # params[:session][:remember_me] == '1' ? remember(user) :forget(user)
-      params[:session][:remember_me] == '1' ? remember(@user) :forget(@user)
+      # params[:session][:remember_me] == '1' ? remember(@user) :forget(@user)
       # リダイレクト先を指定（プロフィールページに遷移）
       # redirect_to user
       # redirect_to @user
       # 記憶されていたURLが存在した場合はそっちにリダイレクトさせる。なければプロフィール画面へ
-      redirect_back_or @user
+      # redirect_back_or @user
       
     else
       # 認証NGの場合 --エラーメッセージを作成する
