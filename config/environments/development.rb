@@ -34,23 +34,12 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
   
-  config.action_mailer.delivery_method = :smtp
-  
   # 下記メールのプレビュー設定
   # 表示するURL:https://1265a021129449bc8fa7a76e453688dc.vfs.cloud9.us-east-2.amazonaws.com/rails/mailers/user_mailer/account_activation
-  # host = 'https://1265a021129449bc8fa7a76e453688dc.vfs.cloud9.us-east-2.amazonaws.com'
-  # config.action_mailer.default_url_options = { host: host, protcol: 'https' } 
-  # 本番
-  host = 'blooming-fortress-04870.herokuapp.com'
-  config.action_mailer.default_url_options = { host: host }
-  ActionMailer::Base.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => host,
-    :authentication => :plain,
-  }
+  
+  host = 'https://1265a021129449bc8fa7a76e453688dc.vfs.cloud9.us-east-2.amazonaws.com'
+  config.action_mailer.default_url_options = { host: host, protcol: 'https' } 
+  
 
   config.action_mailer.perform_caching = false
 
