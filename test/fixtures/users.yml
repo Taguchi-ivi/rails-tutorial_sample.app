@@ -47,7 +47,7 @@ malory:
   email: boss@example.gov
   password_digest: <%= User.digest('password') %>
   activated: true
-  activated: <%= Time.zone.now %>
+  activated_at: <%= Time.zone.now %>
   
 <% 30.times do |n| %>
 user_<%= n %>:
@@ -55,6 +55,6 @@ user_<%= n %>:
   email: <%= "user-#{n}@example.com" %>
   password_digest: <%= User.digest('password') %>
   activated: true
-  activated: <%= Time.zone.now %>
+  activated_at: <%= Time.zone.now %>
 <% end %>
   

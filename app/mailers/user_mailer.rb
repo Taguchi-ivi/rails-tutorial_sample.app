@@ -9,7 +9,7 @@ class UserMailer < ApplicationMailer
     # @greeting = "Hi"
     # mail to: "to@example.org"
     @user = user
-    mail to: user.email, subject:"Account activation"
+    mail to: user.email, subject: "Account activation"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml

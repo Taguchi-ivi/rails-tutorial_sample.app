@@ -28,7 +28,6 @@ Rails.application.routes.draw do
   
   # 名前付きルートが使えるように、またeditのみ使えるようにする
   resources :account_activations, only: [:edit]
-
   
   #get 'static_pages/home'
   #get 'static_pages/help'

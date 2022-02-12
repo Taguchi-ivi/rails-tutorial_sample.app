@@ -38,7 +38,7 @@ Rails.application.configure do
   # 表示するURL:https://1265a021129449bc8fa7a76e453688dc.vfs.cloud9.us-east-2.amazonaws.com/rails/mailers/user_mailer/account_activation
   
   host = 'https://1265a021129449bc8fa7a76e453688dc.vfs.cloud9.us-east-2.amazonaws.com'
-  config.action_mailer.default_url_options = { host: host, protcol: 'https' } 
+  config.action_mailer.default_url_options = { host: host, protocol: 'https' }
   
 
   config.action_mailer.perform_caching = false

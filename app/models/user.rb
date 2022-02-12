@@ -7,10 +7,10 @@ class User < ApplicationRecord
   #仮装の属性を作成
   attr_accessor :remember_token, :activation_token
   # 保存する前にする処理 downcase_emailメソッド
-  before_save :downcase_email
+  before_save   :downcase_email
   # Userを作成する前にする処理 create_activation_digestメソッド
   before_create :create_activation_digest
-  
+
   # 保存する前にemailを小文字にする　Userモデルの中では右式のselfを省略できる
   # before_save { self.email = email.downcase }
   # before_save { email.downcase! } #emailを直接変更しているのでコードが短くて済む
@@ -72,6 +72,7 @@ class User < ApplicationRecord
     BCrypt::Password.new(digest).is_password?(token)
   end
   
+  
   # ユーザーのログイン情報を破棄する
   def forget
     update_attribute(:remember_digest, nil)
@@ -103,10 +104,8 @@ class User < ApplicationRecord
     
     # 有効化トークンとダイジェストを作成及び代入する
     def create_activation_digest
-      self.activation_token = User.new_token
+      self.activation_token  = User.new_token
       self.activation_digest = User.digest(activation_token)  # DBと関連づけられているため、保存処理を行うと一緒に保存される
     end
-    
-    
   
 end

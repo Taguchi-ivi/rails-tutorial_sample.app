@@ -12,6 +12,7 @@ class AccountActivationsController < ApplicationController
       log_in user
       flash[:success] = "Account activated!"
       redirect_to user
+      
     else
       # アカウントの有効化ができなかった場合
       flash[:danger] = "Invalid activation link"
@@ -19,5 +20,5 @@ class AccountActivationsController < ApplicationController
       
     end
   end
-  
+
 end
