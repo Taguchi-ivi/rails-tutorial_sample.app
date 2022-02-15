@@ -68,7 +68,7 @@ Rails.application.configure do
   # config.action_mailer.delivery_method = :smtp
   
   # host = 'blooming-fortress-04870.herokuapp.com'
-  # # host = 'https://blooming-fortress-04870.herokuapp.com'
+  # host = 'https://blooming-fortress-04870.herokuapp.com'
   # config.action_mailer.default_url_options = { host: host }
   # ActionMailer::Base.smtp_settings = {
   #   :port           => ENV['MAILGUN_SMTP_PORT'],
@@ -82,8 +82,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   
-  host = 'blooming-fortress-04870.herokuapp.com'
-  # # host = 'https://blooming-fortress-04870.herokuapp.com'
+  # host = 'blooming-fortress-04870.herokuapp.com'
+  host = 'https://blooming-fortress-04870.herokuapp.com'
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
      :port => 587,
