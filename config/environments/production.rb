@@ -62,21 +62,37 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "sample_app_production"
 
   config.action_mailer.perform_caching = false
+
+  # 本番設定 Mailgun
+  # config.action_mailer.raise_delivery_errors = true
+  # config.action_mailer.delivery_method = :smtp
   
-  # 本番設定
-  config.action_mailer.raise_delivery_errors = true
+  # host = 'blooming-fortress-04870.herokuapp.com'
+  # # host = 'https://blooming-fortress-04870.herokuapp.com'
+  # config.action_mailer.default_url_options = { host: host }
+  # ActionMailer::Base.smtp_settings = {
+  #   :port           => ENV['MAILGUN_SMTP_PORT'],
+  #   :address        => ENV['MAILGUN_SMTP_SERVER'],
+  #   :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
+  #   :password       => ENV['MAILGUN_SMTP_PASSWORD'],
+  #   :domain         => host,
+  #   :authentication => :plain,
+  # }
+  
   config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
   
   host = 'blooming-fortress-04870.herokuapp.com'
-  # host = 'https://blooming-fortress-04870.herokuapp.com'
+  # # host = 'https://blooming-fortress-04870.herokuapp.com'
   config.action_mailer.default_url_options = { host: host }
   ActionMailer::Base.smtp_settings = {
-    :port           => ENV['MAILGUN_SMTP_PORT'],
-    :address        => ENV['MAILGUN_SMTP_SERVER'],
-    :user_name      => ENV['MAILGUN_SMTP_LOGIN'],
-    :password       => ENV['MAILGUN_SMTP_PASSWORD'],
-    :domain         => host,
-    :authentication => :plain,
+     :port => 587,
+     :address => 'smtp.sendgrid.net',
+     :user_name => ENV['SENDGRID_USERNAME'],
+     :password => ENV['SENDGRID_PASSWORD'],
+     :domain => host,
+     :authentication => :plain,
+     :enable_starttls_auto => true
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
