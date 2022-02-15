@@ -10,7 +10,7 @@ class User < ApplicationRecord
   before_save   :downcase_email
   # Userを作成する前にする処理 create_activation_digestメソッド
   before_create :create_activation_digest
-
+  
   # 保存する前にemailを小文字にする　Userモデルの中では右式のselfを省略できる
   # before_save { self.email = email.downcase }
   # before_save { email.downcase! } #emailを直接変更しているのでコードが短くて済む
@@ -70,6 +70,7 @@ class User < ApplicationRecord
     digest = send("#{attribute}_digest")
     return false if digest.nil?
     BCrypt::Password.new(digest).is_password?(token)
+  
   end
   
   

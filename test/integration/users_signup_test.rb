@@ -8,7 +8,7 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
   def setup
     ActionMailer::Base.deliveries.clear
   end
-
+  
   # 無効なユーザー登録に対するテスト
   # 元のユーザー数ととテスト後(失敗するはずのテスト)をしてユーザー数が変化していないことを確認する
   test "invalid signup information" do
@@ -37,10 +37,11 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     # 第二引数に増えた件数を記載
     assert_difference 'User.count', 1 do
       
-      post users_path, params:{ user: { name: "Example User",
-                                        email: "user@example.com",
-                                        password: "password",
-                                        password_confirmation: "password" } }
+      post users_path, params: { user: { name:  "Example User",
+                                         email: "user@example.com",
+                                         password:              "password",
+                                         password_confirmation: "password" } }
+    
     end
     
     # 配信されたメッセージがきっかり1であることを確認する
