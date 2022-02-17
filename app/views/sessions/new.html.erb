@@ -9,6 +9,8 @@
       <%= f.email_field :email, class: 'form-control' %>
       
       <%= f.label :password  %>
+      <!-- パスワード再度設定画面のリンクを設定-->
+      <%= link_to "(forgot_password)", new_password_reset_path %>
       <%= f.password_field :password, class: 'form-control' %>
       
       <!-- checkboxのみラベル内で指定する必要あり -->

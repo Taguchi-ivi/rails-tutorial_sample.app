@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'password_resets/new'
+  get 'password_resets/edit'
   # 自動的に追加される下記行をコメントアウト
   # get 'sessions/new'
   
@@ -28,6 +30,9 @@ Rails.application.routes.draw do
   
   # 名前付きルートが使えるように、またeditのみ使えるようにする
   resources :account_activations, only: [:edit]
+  
+  # 名前付きルートが使えるように
+  resources :password_resets,     only:[:new, :create, :edit, :update]
   
   #get 'static_pages/home'
   #get 'static_pages/help'

@@ -4,8 +4,8 @@ class User < ApplicationRecord
   #length: {maximum:00}文字列の制御　最大許容文字列数を記載
   #unipueness:true 重複を制御 {case_sensitive:false}これで小文字大文字関係なく一意性を確認する
   
-  #仮装の属性を作成
-  attr_accessor :remember_token, :activation_token
+  #仮想の属性を作成
+  attr_accessor :remember_token, :activation_token, :reset_token
   # 保存する前にする処理 downcase_emailメソッド
   before_save   :downcase_email
   # Userを作成する前にする処理 create_activation_digestメソッド
@@ -82,6 +82,7 @@ class User < ApplicationRecord
   
   # ----
   # ユーザー操作の一部をコントローラからモデルに移動する
+  # アカウントを有効にする
   def activate
     # user.update_attributeではなく、下記でOK,selfなら許容だがselfさえ不要になる(selfはモデル内では必須ではない)
     # update_attribute(:activated, true)
@@ -90,8 +91,30 @@ class User < ApplicationRecord
     update_columns(activated: true, activated_at: Time.zone.now)
   end
   
+  # 有効化用のメールを送信する
   def send_activation_email
     UserMailer.account_activation(self).deliver_now
+  end
+  
+  # パスワード再設定の属性を設定する
+  def create_reset_digest
+    self.reset_token = User.new_token
+    # update_attribute(:reset_digest,  User.digest(reset_token))
+    # update_attribute(:reset_sent_at, Time.zone.now)
+    # 二個をupdateするところを一個にまとめる
+    update_columns(reset_digest: User.digest(reset_token), reset_sent_at: Time.zone.now)
+    
+  end
+  
+  # パスワード再設定のメールを送信
+  def send_password_reset_email
+    UserMailer.password_reset(self).deliver_now
+  end
+  
+  # パスワード再設定の期限が切れている場合はtrueを返す
+  # 2時間より少ない(より早い)場合はエラー =現在時刻より2時間以上前（早い）の場合
+  def password_reset_expired?
+    reset_sent_at < 2.hours.ago
   end
   
   # この場所だけで使用、隠蔽できる

@@ -8,6 +8,7 @@ class UserMailerTest < ActionMailer::TestCase
     # assert_equal ["from@example.com"], mail.from
     # assert_match "Hi", mail.body.encoded
     
+    # 第一引数の正規表現の値と第二引数の値がマッチすれば成功
     # assert_match 正規表現も一致しているか確認できる
     
     user = users(:michael)
@@ -20,6 +21,29 @@ class UserMailerTest < ActionMailer::TestCase
     assert_match user.activation_token,   mail.body.encoded
     assert_match CGI.escape(user.email),  mail.body.encoded
     
+  end
+  
+  test "password_reset" do
+    
+    # データ取得
+    user = users(:michael)
+    # 新規トークンを取得
+    user.reset_token = User.new_token
+    
+    mail = UserMailer.password_reset(user)
+    
+    # 件名が一致していることを確認
+    assert_equal  "Password reset", mail.subject
+    # メールの送信者と取得したメールアドレスが一致していること
+    assert_equal [user.email], mail.to
+    # 送り主がnoreply@example.comであること
+    assert_equal ["noreply@example.com"], mail.from
+    # トークンが正規表現で存在すること 
+    assert_match user.reset_token,        mail.body.encoded
+    # メールアドレスが正規が正規表現で存在すること
+    assert_match CGI.escape(user.email),  mail.body.encoded
+    
+      
   end
 
   # test "password_reset" do
