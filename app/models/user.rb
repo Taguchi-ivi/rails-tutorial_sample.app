@@ -1,4 +1,9 @@
 class User < ApplicationRecord
+  
+  # micropostと関連付け user1に対してmicropost複数
+  # 引数にdestroyを付与して、権限があるものがuserを削除したらすべてのデータが消えることを指定
+  has_many :microposts, dependent: :destroy
+  
   #userのバリディーションを設定
   #validates(:name,presence:true) 下と同義 空欄の制御
   #length: {maximum:00}文字列の制御　最大許容文字列数を記載
@@ -115,6 +120,11 @@ class User < ApplicationRecord
   # 2時間より少ない(より早い)場合はエラー =現在時刻より2時間以上前（早い）の場合
   def password_reset_expired?
     reset_sent_at < 2.hours.ago
+  end
+  
+  # 試作feedを定義 SQL文に変数を代入する場合は常にエスケープする習慣を。　セキュリティ上の関係で
+  def feed
+    Micropost.where("user_id = ?" , id)
   end
   
   # この場所だけで使用、隠蔽できる

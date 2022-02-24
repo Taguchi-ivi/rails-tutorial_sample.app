@@ -1,11 +1,11 @@
-<% if @user.errors.any? %>
+<% if object.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-danger">
       <!-- pluralize 第一引数が1or2以上かで第二引数の文字列を複数形、単数形にする 1ならerror 2以上ならerrors -->
-      The form contains <%= pluralize(@user.errors.count, "error" ) %>.
+      The form contains <%= pluralize(object.errors.count, "error" ) %>.
     </div>
     <ul>
-      <% @user.errors.full_messages.each do |msg| %>
+      <% object.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
     </ul>

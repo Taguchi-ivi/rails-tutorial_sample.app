@@ -34,6 +34,9 @@ Rails.application.routes.draw do
   # 名前付きルートが使えるように
   resources :password_resets,     only:[:new, :create, :edit, :update]
   
+  # 名前付きルーツが使えるように 新規作成と削除のみ
+  resources :microposts,          only: [:create, :destroy]
+  
   #get 'static_pages/home'
   #get 'static_pages/help'
   #get 'static_pages/about'

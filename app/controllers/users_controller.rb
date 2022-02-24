@@ -22,6 +22,9 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
+    
+    # 必要なマイクロポストのページを引き出す
+    @microposts = @user.microposts.paginate(page: params[:page])
     # @userが有効でない場合はリダイレクトを実行しない
     # 同じアクション内でrenderを複数呼び出すとエラーになるため、and return をつけて明示的に処理を終了させる
     redirect_to root_url and return unless @user.activated?
@@ -90,16 +93,6 @@ class UsersController < ApplicationController
     end
     
     # beforeアクション
-    
-    # ログイン済みのユーザーか確認
-    def logged_in_user
-      unless logged_in?
-        # セッションにアクセスしたURL
-        store_location
-        flash[:danger] = "Please log in."
-        redirect_to login_url
-      end
-    end
     
     # 正しいユーザーかどうか確認 一致していなかったらルートURLへ
     def corrent_user
