@@ -1,0 +1,6 @@
+<!-- フォロー解除 既存のリレーションシップを探し出す DELETEメソッドを使いdestroyへ -->
+<!-- Ajax 非同期化させるためにlocal: falseを設定  非同期=>webページからサーバーを経由せずにリクエスト送信-->
+<%= form_with(model: current_user.active_relationships.find_by(followed_id: @user.id),
+              html: { method: :delete }, local: false) do |f| %>
+  <%= f.submit "Unfollow", class: "btn btn-default" %>
+<% end %>

@@ -108,5 +108,49 @@ class UserTest < ActiveSupport::TestCase
     end
   end
   
+  # following関連メソッドのテスト
+  test "should follower and unfollow a user" do
+    michael = users(:michael)
+    archer = users(:archer)
+    # フォローしていないことを確認
+    assert_not michael.following?(archer)
+    # フォローメソッドでフォロー
+    michael.follow(archer)
+    # フォロー中になったことを確認
+    assert michael.following?(archer)
+    # フォロワーに存在することを確認(フォローされた事による逆方向からの確認)
+    assert archer.followers.include?(michael)
+    # フォローを解除
+    michael.unfollow(archer)
+    # 解除されたことを確認
+    assert_not michael.following?(archer)
+    
+  end
+  
+  # ステータスフィードテスト
+  # 条件は3つ 1:フォローしている人の投稿が表示されている 2:自身の投稿も表示 3:フォローしていないユーザーの投稿は表示しない
+  test "feed should have the right posts" do
+    michael = users(:michael)
+    archer = users(:archer)
+    lana = users(:lana)
+    
+    # フォローしているユーザーの投稿を確認
+    lana.microposts.each do |post_following|
+    
+      assert michael.feed.include?(post_following)
+    end
+    
+    # 自分自身の投稿を確認
+    michael.microposts.each do |post_self|
+      assert michael.feed.include?(post_self)
+    end
+    
+    # フォローしていないユーザーが表示されていないこと
+    archer.microposts.each do |post_unfollowed|
+      assert_not michael.feed.include?(post_unfollowed)
+    end
+
+  end
+  
   
 end

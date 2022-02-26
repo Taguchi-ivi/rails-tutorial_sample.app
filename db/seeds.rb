@@ -30,6 +30,7 @@ User.create!(name:"Example User",
                activated_at: Time.zone.now)
 end
 
+# マイクロポスト
 # ユーザーの一部を対象にマイロクポストを生成(paginateを確認するため、30以上=50作成)
 # 一ユーザーだけでタイムラインが埋まるのは見栄えが良く無いので、ループ分一部修正
 users = User.order(:created_at).take(6)
@@ -37,3 +38,13 @@ users = User.order(:created_at).take(6)
    content = Faker::Lorem.sentence(word_count: 5)
    users.each { |user| user.microposts.create!(content: content) }
 end
+
+# リレーションシップを作成
+# 最初のユーザーに3-51までフォローさせる
+# 4-41は最初のユーザーをフォローさせる
+users = User.all
+user = users.first
+following = users[2..50]
+followers = users[3..40]
+following.each { |followed| user.follow(followed) }
+followers.each { |follower| follower.follow(user) }

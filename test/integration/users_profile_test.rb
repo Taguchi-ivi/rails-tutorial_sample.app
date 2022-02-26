@@ -15,6 +15,18 @@ class UsersProfileTest < ActionDispatch::IntegrationTest
     assert_select 'h1', text: @user.name
     # h1タグ（トップレベルの見出し）の内側にある、gravatarクラス付きのimgタグがあるかどうかをチェック
     assert_select 'h1>img.gravatar' 
+    
+    # following,followers件数を確認
+    # 特定のHTMLタグが存在する→ strong id="following"
+    assert_select 'strong#following'
+    # 描写されたページに@user.following.countを文字列にしたものが含まれる
+    assert_match @user.following.count.to_s, response.body
+    # 特定のHTMLタグが存在する→ strong id="followers"
+    assert_select 'strong#followers'
+    # 描写されたページに@user.followers.countを文字列にしたものが含まれる
+    assert_match @user.followers.count.to_s, response.body
+    
+    
     # response.body = そのページのHTMLが返される
     assert_match @user.microposts.count.to_s, response.body
     # 一つだけdivタグが存在することを確認

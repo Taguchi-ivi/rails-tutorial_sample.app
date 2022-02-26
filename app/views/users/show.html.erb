@@ -8,10 +8,16 @@
         <%= @user.name %>
       </h1>      
     </section>
+    <!-- follow件数を表示 -->
+    <section class="stats">
+      <%= render 'shared/stats' %>
+    </section>
   </aside>
   
   <!-- micropost用 -->
   <div class="col-md-8">
+    <!-- followのボタン表示 -->
+    <%= render 'follow_form' if logged_in? %>
     <!-- 一件も投稿していない場合は表示しない -->
     <% if @user.microposts.any? %>
       <h3>Microposts (<%= @user.microposts.count %>)</h3>

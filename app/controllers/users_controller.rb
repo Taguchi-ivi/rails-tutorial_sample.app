@@ -1,9 +1,11 @@
 class UsersController < ApplicationController
 
-  # before アクション　処理を実行する直前に特定のメソッドを実行する仕組み
+  # before アクション 処理を実行する直前に特定のメソッドを実行する仕組み
   # オプションにindex,edi,destroyとupdateを渡し、onlyとすることで、対象の部分でしか利用できない仕様
   # アクションごとに適用されるので、テストはアクションごとに記載する必要あり
-  before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+  # followinf,followers追加,
+  before_action :logged_in_user, only: [:index, :edit, :update, :destroy,
+                                        :following, :followers]
   
   # 別のユーザーのプロフィールを編集しようとしたらリダイレクト
   before_action :corrent_user, only: [:edit, :update]
@@ -83,6 +85,24 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User deleted"
     redirect_to users_url
+  end
+  
+  # following
+  def following
+    @title = "Following"
+    @user = User.find(params[:id])
+    
+    @users = @user.following.paginate(page: params[:page])
+    # 明治的に呼び出し
+    render 'show_follow'
+  end
+  
+  def followers
+    @title = "Followers"
+    @user = User.find(params[:id])
+    @users = @user.followers.paginate(page: params[:page])
+    # 明治的に呼び出し
+    render 'show_follow'
   end
   
   # private化してこの中でのみ使えるものとする。

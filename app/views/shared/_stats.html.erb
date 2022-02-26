@@ -1,0 +1,19 @@
+<!-- プロフィールページとHomeページの両方に表示-->
+<!-- @userがnilの場合は、current_userを、nilではない場合そのまま -->
+<% @user ||= current_user %>
+<div class="stats">
+  <!-- following(フォローしている)件数とフォローしている名前付きパスを指定 -->
+  <a href="<%= following_user_path(@user) %>">
+    <strong id="following" class="stat">
+      <%= @user.following.count %>
+    </strong>
+    following
+  </a>
+  <!-- フォローされている件数と名前付きパスを指定 -->
+  <a href="<%= followers_user_path(@user) %>">
+    <strong id="followers" class="stat">
+      <%= @user.followers.count %>
+    </strong>
+    followers
+  </a>
+</div>

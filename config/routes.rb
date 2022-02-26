@@ -25,6 +25,15 @@ Rails.application.routes.draw do
   post    '/login',  to: 'sessions#create'
   delete  'logout',  to: 'sessions#destroy'
   
+  # follower,following件数
+  # /users/1/following や /users/1/followers どちらもgetメソッドなのでこの記載方法
+  # memberを使うとuser_idが含まれるURL,collectionを使うとidを指定せずにすべてを表示する
+  resources :users do
+    member do
+      get :following, :followers
+    end
+  end
+  
   # users/1のようなURL(ルーティング)を有効にする
   resources :users
   
@@ -34,8 +43,11 @@ Rails.application.routes.draw do
   # 名前付きルートが使えるように
   resources :password_resets,     only:[:new, :create, :edit, :update]
   
-  # 名前付きルーツが使えるように 新規作成と削除のみ
-  resources :microposts,          only: [:create, :destroy]
+  # 名前付きルートが使えるように 新規作成と削除のみ
+  resources :microposts,          only:[:create, :destroy]
+  
+  # 名前付きルートが使えるように
+  resources :relationships,       only:[:create, :destroy]
   
   #get 'static_pages/home'
   #get 'static_pages/help'

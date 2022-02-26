@@ -4,6 +4,28 @@ class User < ApplicationRecord
   # 引数にdestroyを付与して、権限があるものがuserを削除したらすべてのデータが消えることを指定
   has_many :microposts, dependent: :destroy
   
+  # relationshipと関連づけ,class名が存在しないので明示的に指定する
+  # ユーザーが削除されたら全て消す設定dependent :destroyも設定
+  # フォロー
+  has_many :active_relationships, class_name:  "Relationship",
+                                  foreign_key: "follower_id",
+                                  dependent:   :destroy
+  
+  # フォロワー
+  has_many :passive_relationships, class_name:  "Relationship",
+                                   foreign_key: "followed_id",
+                                   dependent:   :destroy
+  
+  
+  # 多対多 デフォルトの設定を上書きして、わかりやすい名前に(followingとはfollowed idの集合)
+  # フォロー
+  has_many :following, through: :active_relationships, source: :followed
+  
+  # フォロワー
+  has_many :followers, through: :passive_relationships, source: :follower
+  
+  
+  
   #userのバリディーションを設定
   #validates(:name,presence:true) 下と同義 空欄の制御
   #length: {maximum:00}文字列の制御　最大許容文字列数を記載
@@ -123,8 +145,38 @@ class User < ApplicationRecord
   end
   
   # 試作feedを定義 SQL文に変数を代入する場合は常にエスケープする習慣を。　セキュリティ上の関係で
+  # ユーザーのステータスフィードを返す
   def feed
-    Micropost.where("user_id = ?" , id)
+    # Micropost.where("user_id = ?" , id)
+    # following_idsメソッドは、has_many :followingの関連付けをしたときにActive Recordが自動生成したもの
+    # 自身を含めたフォローしている投稿をすべて表示,following_idsは自動生成メソッドフォローしているidをすべて返す(,区切りで)
+    # Micropost.where("user_id IN (?) OR user_id = ?", following_ids, id)
+    # 同じ変数を違う箇所でも使いたい場合こっちの方が便利
+    # Micropost.where("user_id IN (:following_ids) OR user_id = :user_id",
+    #                 following_ids: following_ids, user_id: id)
+    # さらにリファクタリング。
+    # フォロー数が多いと遅くなる可能性を加味して.サブセレクトを使用
+    following_ids = "SELECT followed_id FROM relationships 
+                     WHERE follower_id = :user_id"
+    Micropost.where("user_id IN (#{following_ids}) 
+                     OR user_id = :user_id", user_id: id)
+    
+  end
+  
+  # ユーザーをフォローする
+  def follow(other_user)
+    # 配列に追加する
+    following << other_user
+  end
+  
+  # フォローを解除
+  def unfollow(other_user)
+    active_relationships.find_by(followed_id: other_user.id).destroy
+  end
+  
+  # 現在ユーザーがフォローしていたらtrueを返す,includeメソッドで存在を確認
+  def following?(other_user)
+    following.include?(other_user)
   end
   
   # この場所だけで使用、隠蔽できる
